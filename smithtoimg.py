@@ -23,40 +23,34 @@ specialImages = {
 
 
 def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual.png"):
-    # Constants
     image_width = 500
     header_height = 32
     row_height = 40
     margin = 32
     font_size = 20
-    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust based on your system
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
-    # Load operation images
     operation_images = load_operation_images()
     operation_image_size = list(operation_images.values())[0].size
     step_spacing = operation_image_size[0] + 2
 
-    # Calculate total image height
-    total_rows = sum(len(tools) + 1 for tools in solved_data.values())  # +1 for metal headers
+    total_rows = sum(len(tools) + 1 for tools in solved_data.values())
     total_height = total_rows * row_height + header_height + margin * 2
 
-    # Create image canvas
+
     img = Image.new("RGBA", (image_width, total_height), color="white")
     draw = ImageDraw.Draw(img)
 
-    # Load font
     try:
         font = ImageFont.truetype(font_path, font_size)
     except IOError:
         font = ImageFont.load_default()
 
-    # Draw header
+
     y_offset = margin
     tool_canvas = Image.new("RGBA", img.size, (255, 255, 255, 0))
 
-    # Draw metal sections
     for metal, tools in solved_data.items():
-        # Draw metal header
         draw.rectangle(
             [margin, y_offset, image_width - margin, y_offset + row_height],
             fill="#dddddd",
@@ -70,9 +64,7 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
             font=font
         )
         y_offset += row_height
-        
-        
-        # Draw tools and their sequences
+
         for tool, sequence in tools.items():
             tool_img_path =  f"icons/items/metal/{tool.lower()}/{metal.lower()}.png"
 
@@ -92,7 +84,6 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
                     font=font
                 )
 
-            # Draw operation images for the sequence
             x_offset = margin * 5
             sequence = compress_sequence(sequence)
             for step, count in sequence:
@@ -115,12 +106,8 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
         y_offset += 5
 
     img = Image.alpha_composite(img, tool_canvas)
-    # Save the image
     img.save(output_file)
-    print(f"Image saved as {output_file}")
 
-# Example Solved Data
-solved_data_example = getAllToolsSolved()
-
-# Generate the image
-generate_tool_sequence_image(solved_data_example)
+if __name__ == "__main__":
+    solved_data_example = getAllToolsSolved()
+    generate_tool_sequence_image(solved_data_example)
