@@ -20,7 +20,7 @@ specialImages = {
 
 
 def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual.png"):
-    image_width = 450
+    image_width = 500
     header_height = 32
     row_height = 40
     margin = 32
@@ -64,7 +64,6 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
 
         for tool, sequence in tools.items():
             tool_img_path =  f"icons/items/metal/{tool.lower()}/{metal.lower()}.png"
-            tool_img2_path =  f"icons/items/{metal.lower()}-{tool.lower()}.png"
 
             if metal in specialImages and tool in specialImages[metal]:
                 tool_img_path = specialImages[metal][tool]
@@ -74,8 +73,6 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
                 tool_canvas.paste(tool_img, tool_position, tool_img)
             if os.path.exists(tool_img_path):
                add_image(tool_img_path)
-            elif os.path.exists(tool_img2_path):
-                add_image(tool_img2_path)
             else:
                 draw.text(
                     (margin * 2, y_offset + row_height // 4 + 16),

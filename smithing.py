@@ -20,6 +20,8 @@ enders = {
     "hammer" : [['S', 'P']     ],
     "rod"    : [['D', 'D', 'B']],
     "sheet"  : [['H', 'H', 'H']],
+    "tongs"  : [['B', 'D', 'H']],
+    "tuyere"   : [['B', 'B']],
 }
 
 metals = {
@@ -27,14 +29,16 @@ metals = {
     "bronze": "Bronze",
     "brass": "Brass",
     "wrought_iron": "Wrought Iron",
-    "bismuth_bronze": "Bismuth Bronze"
+    "bismuth_bronze": "Bismuth Bronze",
+    "steel": "Steel"
 }
 
 tool_metals = {
     "copper",
     "bronze",
     "wrought_iron",
-    "bismuth_bronze"
+    "bismuth_bronze",
+    "steel"
 }
 
 tools = {
@@ -49,6 +53,8 @@ tools = {
     "hammer"  : ( "tfc:anvil/{}_hammer_head", enders["hammer" ]),
     "lamp"    : ( "tfc:anvil/{}_lamp", enders["lamp"   ]),
     "chain"   : ( "tfc:anvil/{}_chain", enders["chain"  ]),
+    "tuyere"   : ( "tfc:anvil/{}_tuyere", enders["tuyere"  ]),
+    "tongs"   : ( "tfchotornot:anvil/tong_part/{}", enders["tongs"  ]),
 }
 
 others = {
@@ -81,6 +87,12 @@ special = {
                             [['D', 'D', 'B']]),
         "flask"         : ( "waterflasks:anvil/unfinished_iron_flask", 
                             [['B', 'B', 'P']]),
+    },
+    "steel": {
+        "high_carbon_ingot": ("tfc:anvil/high_carbon_steel_ingot", 
+                            [['H', 'H', 'H']]),
+        "ingot": ("tfc:anvil/steel_ingot", 
+                            [['H', 'H', 'H']]),
     }
 }   
 
@@ -103,13 +115,13 @@ for metal in tool_metals:
     for tool, val in tools.items():
         if not metal in solving.keys():
             solving[metal] = {}
-        solving[metal][tool] = solve_target(val)
+        solving[metal][tool] = solve_target(val, metal)
 
 for metal, tools in special.items():
     for tool, val in tools.items():
         if not metal in solving.keys():
             solving[metal] = {}
-        solving[metal][tool] = solve_target(val)
+        solving[metal][tool] = solve_target(val, metal)
 
 operations = {
     'P':  + 2,
