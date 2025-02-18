@@ -28,9 +28,13 @@ metals = {
     "copper": "Copper",
     "bronze": "Bronze",
     "brass": "Brass",
+    "cast_iron": "Cast Iron",
     "wrought_iron": "Wrought Iron",
     "bismuth_bronze": "Bismuth Bronze",
-    "steel": "Steel"
+    "steel": "Steel",
+    "black_steel": "Black Steel",
+    "blue_steel": "Blue Steel",
+    "red_steel": "Red Steel",
 }
 
 tool_metals = {
@@ -38,7 +42,10 @@ tool_metals = {
     "bronze",
     "wrought_iron",
     "bismuth_bronze",
-    "steel"
+    "steel",
+    "black_steel",
+    "blue_steel",
+    "red_steel"
 }
 
 tools = {
@@ -91,6 +98,18 @@ special = {
     "steel": {
         "high_carbon_ingot": ("tfc:anvil/high_carbon_steel_ingot", 
                             [['H', 'H', 'H']]),
+        "ingot": ("tfc:anvil/steel_ingot", 
+                            [['H', 'H', 'H']]),
+    },
+    "black_steel": {
+        "ingot": ("tfc:anvil/steel_ingot", 
+                            [['H', 'H', 'H']]),
+    },
+    "blue_steel": {
+        "ingot": ("tfc:anvil/steel_ingot", 
+                            [['H', 'H', 'H']]),
+    },
+    "red_steel": {
         "ingot": ("tfc:anvil/steel_ingot", 
                             [['H', 'H', 'H']]),
     }
