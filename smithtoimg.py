@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont
-import os
+import os, json
 from smithing import getAllToolsSolved, compress_sequence, metals
 def load_operation_images():
     operation_images = {
@@ -108,4 +108,8 @@ def generate_tool_sequence_image(solved_data, output_file="tools_sequence_visual
 
 if __name__ == "__main__":
     solved_data_example = getAllToolsSolved()
+    
+    with open("solved_data.json", "w") as f:
+        f.write(json.dumps(solved_data_example))
+
     generate_tool_sequence_image(solved_data_example)

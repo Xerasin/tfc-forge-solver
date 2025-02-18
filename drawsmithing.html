@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tool Sequence Visualizer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .metal {
+        background: #ddd;
+        padding: 10px;
+        cursor: pointer;
+        border: 1px solid black;
+        margin: 5px 0;
+      }
+      .tools {
+        display: none;
+        padding-left: 20px;
+      }
+      .tool {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+      .tool img {
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+      }
+      .sequence {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+      }
+      .step {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+      }
+      .step img {
+        width: 32px;
+        height: 32px;
+        margin-right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Tool Sequence Visualizer</h2>
+    <div id="tool-container"></div>
+
+    <script>
+      async function fetchSolvedData() {
+        try {
+          const response = await fetch("solved_data.json");
+          const solvedData = await response.json();
+          createToolUI(solvedData);
+        } catch (error) {
+          console.error("Error loading solved_data.json:", error);
+        }
+      }
+
+      function countSteps(sequence) {
+        const stepCounts = {};
+        sequence.forEach((step) => {
+          stepCounts[step] = (stepCounts[step] || 0) + 1;
+        });
+        return Object.entries(stepCounts);
+      }
+
+      function createToolUI(solvedData) {
+        const container = document.getElementById("tool-container");
+        console.log("Loaded data:", solvedData); // Debugging log
+
+        for (const metal in solvedData) {
+          const metalDiv = document.createElement("div");
+          metalDiv.className = "metal";
+          metalDiv.textContent = metal;
+          metalDiv.onclick = () => {
+            const toolSection = metalDiv.nextElementSibling;
+            toolSection.style.display =
+              toolSection.style.display === "none" ? "block" : "none";
+          };
+
+          const toolsDiv = document.createElement("div");
+          toolsDiv.className = "tools";
+
+          for (const tool in solvedData[metal]) {
+            const toolDiv = document.createElement("div");
+            toolDiv.className = "tool";
+
+            const toolImg = document.createElement("img");
+            toolImg.src = `icons/items/metal/${tool.toLowerCase()}/${metal.toLowerCase()}.png`;
+
+            const toolName = document.createElement("span");
+            toolName.textContent = tool;
+
+            toolDiv.appendChild(toolImg);
+            toolDiv.appendChild(toolName);
+
+            const sequenceDiv = document.createElement("div");
+            sequenceDiv.className = "sequence";
+
+            const sequence = solvedData[metal][tool];
+            console.log(`Processing ${metal} -> ${tool}:`, sequence); // Debugging log
+
+            if (Array.isArray(sequence)) {
+              const countedSteps = countSteps(sequence);
+              countedSteps.forEach(([step, count]) => {
+                const stepDiv = document.createElement("div");
+                stepDiv.className = "step";
+
+                const stepImg = document.createElement("img");
+                stepImg.src = `icons/operations/${step}.png`;
+
+                const stepText = document.createElement("span");
+                stepText.textContent = `x${count}`;
+
+                stepDiv.appendChild(stepImg);
+                stepDiv.appendChild(stepText);
+                sequenceDiv.appendChild(stepDiv);
+              });
+            } else {
+              console.warn(
+                `Invalid sequence for ${metal} -> ${tool}:`,
+                sequence
+              ); // Debugging log
+            }
+
+            toolDiv.appendChild(sequenceDiv);
+            toolsDiv.appendChild(toolDiv);
+          }
+
+          container.appendChild(metalDiv);
+          container.appendChild(toolsDiv);
+        }
+      }
+
+      fetchSolvedData();
+    </script>
+  </body>
+</html>
